@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript">
+
+           //封装函数
+
+           //isGet这个参数  传进去的是true 或false
+            function Ajax(url,param,isGet,fuSucces,fnFail) {
+                var xhr = null;
+
+                if(window.XMLHttpRequest) {
+                    xhr = new XMLHttpRequest();
+                }else{
+                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                if(isGet == true){
+                    //设置get或post
+                     if(param){
+                        //参数如果存在  param 这个参数的格式  例如 "username=十三叔&password=123";
+                        xhr.open("get",url+"?"+param,true);
+                    }else{
+                        xhr.open("get",url,true);
+                    }
+
+                    xhr.send();
+                }else{
+                    xhr.open("post",url,true);
+                    //请求头   get方式  参数是放在请求头中     post方式是放在请求体中
+                    xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                    xhr.send(param);
+                }
+
+
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState == 4){
+                        if(xhr.status == 200){
+                            //status http状态码
+                            //请求成立
+                            xhr.responseText;
+                            fuSucces(xhr.responseText);
+                        }else {
+                            //请求失败
+                            //如果传这个参数 说明想处理
+                            if(fnFail){
+                                fnFail(xhr.status);
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
+
+
+        </script>
+
+    </head>
+    <body>
+
+    </body>
+</html>
